@@ -4,7 +4,7 @@ import android.os.Bundle
 
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import com.shapshuk.SeaBattleTestApp.SeaBattleTestApp
+import com.shapshuk.SeaBattleTestApp.app.SeaBattleTestApp
 
 /** Launches the Android application. */
 class AndroidLauncher : AndroidApplication() {
