@@ -40,6 +40,7 @@ class ShipPlacementScreen(private val game: SeaBattleTestApp) : KtxScreen {
     private val backButtonTexture = Texture(Gdx.files.internal("return_button.png"))
     private val backgroundTexture = Texture(Gdx.files.internal("sea_texture.jpg"))
     private val explosionTexture = Texture(Gdx.files.internal("explosion_texture.jpg"))
+    private val explodedShipTexture = Texture(Gdx.files.internal("exploded_ship_square.png"))
 
     private var shaderProgram: ShaderProgram
 
@@ -153,16 +154,19 @@ class ShipPlacementScreen(private val game: SeaBattleTestApp) : KtxScreen {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line)
         shapeRenderer.color = Color.BLACK
 
+        // Draw grid lines
         for (i in 0..gridSize) {
             shapeRenderer.line(gridStartX, gridStartY + i * cellSize, gridStartX + gridSize * cellSize, gridStartY + i * cellSize)
             shapeRenderer.line(gridStartX + i * cellSize, gridStartY, gridStartX + i * cellSize, gridStartY + gridSize * cellSize)
         }
         shapeRenderer.end()
 
+        // Draw labels
         drawLabels()
     }
 
     private fun drawLabels() {
+        // Column labels (A-J)
         for (i in 0 until gridSize) {
             val label = Label(('A' + i).toString(), skin).apply {
                 setFontScale(labelFontScale)
@@ -171,6 +175,7 @@ class ShipPlacementScreen(private val game: SeaBattleTestApp) : KtxScreen {
             stage.addActor(label)
         }
 
+        // Row labels (1-10)
         for (i in 0 until gridSize) {
             val label = Label((i + 1).toString(), skin).apply {
                 setFontScale(labelFontScale)
@@ -184,6 +189,7 @@ class ShipPlacementScreen(private val game: SeaBattleTestApp) : KtxScreen {
         val grid = shipPlacement.getGrid()
         batch.begin()
 
+        // Draw ships on the grid
         for (row in grid.indices) {
             for (col in grid[row].indices) {
                 if (grid[row][col]) {
@@ -194,6 +200,39 @@ class ShipPlacementScreen(private val game: SeaBattleTestApp) : KtxScreen {
             }
         }
         batch.end()
+
+        if (showExplosion) {
+            renderShipExplosionEffect(grid)
+        }
+    }
+
+    private fun renderShipExplosionEffect(grid: Array<Array<Boolean>>) {
+        shaderBatch.begin()
+        shaderBatch.shader = shaderProgram
+
+        shipTexture.bind(1)
+        shaderProgram.setUniformi("u_texture", 1)
+
+        explodedShipTexture.bind(0)
+        shaderProgram.setUniformi("u_newTexture", 0)
+
+        shaderProgram.setUniformf("u_resolution", Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        shaderProgram.setUniformf("u_radius", 0.1f)
+
+        val normalizedTouchPos = Vector2(uTouchPos.x / Gdx.graphics.width, uTouchPos.y / Gdx.graphics.height)
+        shaderProgram.setUniformf("u_touchPos", normalizedTouchPos.x, normalizedTouchPos.y)
+
+        // Draw exploded ships
+        for (row in grid.indices) {
+            for (col in grid[row].indices) {
+                if (grid[row][col]) {
+                    val x = gridStartX + col * cellSize
+                    val y = gridStartY + row * cellSize
+                    shaderBatch.draw(explodedShipTexture, x - 2f, y - 2f, cellSize + 4f, cellSize + 4f)
+                }
+            }
+        }
+        shaderBatch.end()
     }
 
     override fun resize(width: Int, height: Int) {
@@ -205,7 +244,6 @@ class ShipPlacementScreen(private val game: SeaBattleTestApp) : KtxScreen {
     }
 
     override fun dispose() {
-        // Dispose in the correct order to prevent resource leaks
         shaderBatch.dispose()
         batch.dispose()
         shapeRenderer.dispose()
