@@ -21,7 +21,6 @@ class ShipPlacement(private val gridSize: Int) {
                 }
             }
         }
-        println(getGrid().joinToString("\n") { it.joinToString(" ") })
     }
 
     private fun canPlaceShip(x: Int, y: Int, size: Int, horizontal: Boolean): Boolean {
