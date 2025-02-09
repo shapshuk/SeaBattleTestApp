@@ -1,32 +1,48 @@
-# SeaBattleTestApp
+- # Sea Battle Android (Test Assignment)
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
+This project is an implementation of a test assignment for developing a Sea Battle game for Android using libGDX framework. The application demonstrates core game functionality along with advanced graphics features implemented through GLSL shaders.
 
-This project was generated with a Kotlin project template that includes Kotlin application launchers and [KTX](https://libktx.github.io/) utilities.
+## Assignment Requirements Implementation
 
-## Platforms
+### Core Functionality
+- **libGDX framework**:
+  Successfully implemented cross-platform game architecture using libGDX, supporting Android deployment with APK output.
+- **Basic Game Implementation:**:
+  Developed core Sea Battle mechanics including:
+  - Ship placement system
+  - Game board management
+  - Basic algorithm for automatic ship arrangement
 
-- `core`: Main module with the application logic shared by all platforms.
-- `android`: Android mobile platform. Needs Android SDK.
+### Advanced Graphics Features
+- **GLSL Shader Implementation**:
+  Developed custom shader system featuring:
+  - Dynamic texture masking
+  - Real-time mask position updates
+  - Dual-texture rendering capability
+- **Masking System**:
+  Implemented interactive mask that:
+  - Can be moved across the game field
+  - Reveals alternative textures for both background and ships
+  - Supports custom mask shapes through texture input
+  
+## Technical Implementation
+### Architecture
+ - **Framework**: libGDX (Cross-platform game development)
+ - **Language**: Kotlin (Modern, concise Android development)
+ - **Graphics**: OpenGL ES with custom GLSL shaders
+ - **Build System**: Gradle with Android Studio integration
 
-## Gradle
+## Key Components
+ - **Shader System**:
+   - Custom GLSL implementation
+   - Dynamic texture masking
+   - Real-time mask position updates
+ - **Game Logic**:
+   - Rule-based ship placement
+   - State management system
+   - Auto-placement algorithm
 
-This project uses [Gradle](https://gradle.org/) to manage dependencies.
-The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
-Useful Gradle tasks and flags:
-
-- `--continue`: when using this flag, errors will not stop the tasks from running.
-- `--daemon`: thanks to this flag, Gradle daemon will be used to run chosen tasks.
-- `--offline`: when using this flag, cached dependency archives will be used.
-- `--refresh-dependencies`: this flag forces validation of all dependencies. Useful for snapshot versions.
-- `android:lint`: performs Android project validation.
-- `build`: builds sources and archives of every project.
-- `cleanEclipse`: removes Eclipse project data.
-- `cleanIdea`: removes IntelliJ project data.
-- `clean`: removes `build` folders, which store compiled classes and built archives.
-- `eclipse`: generates Eclipse project data.
-- `idea`: generates IntelliJ project data.
-- `test`: runs unit tests (if any).
-
-Note that most tasks that are not specific to a single project can be run with `name:` prefix, where the `name` should be replaced with the ID of a specific project.
-For example, `core:clean` removes `build` folder only from the `core` project.
+## UI System:
+ - Multiple scene navigation
+ - Touch event handling
+ - Adaptive layout system
